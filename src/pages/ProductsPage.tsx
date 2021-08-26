@@ -23,7 +23,7 @@ export function ProductsPage() {
         {products.map((p) => (
           <ProductCard
             id={p.id}
-            key={p.title}
+            key={p.id}
             imgUrl={p.imgUrl}
             title={p.title}
             price={p.price}

@@ -26,7 +26,6 @@ export function ProductPage() {
       const productJson = JSON.parse(localProduct);
       const filterProducts = productJson.filter((p:Product) => p.id !== id);
       localStorage.setItem('products',JSON.stringify(filterProducts));
-      console.log(filterProducts);
     }
   }
 
