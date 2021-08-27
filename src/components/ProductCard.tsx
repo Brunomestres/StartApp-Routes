@@ -23,13 +23,15 @@ export function ProductCard(props: Props) {
     <HStack
       mt={4}
       align="flex-start"
-      onClick={() => router.push(`/${props.id}`)}
+      onClick={() => router.push(`/product/${props.id}`)}
+      backgroundColor="#FAEEAD"
     >
-      <Box borderRadius="md" width="100px" overflow="hidden" height="100px">
+      <Box borderRadius="md" width="100px" overflow="hidden" height="100px" >
         <Image
           width="100%"
           backgroundPosition="center center"
           src={props.imgUrl}
+          minH="100%"
         />
       </Box>
       <VStack align="flex-start">

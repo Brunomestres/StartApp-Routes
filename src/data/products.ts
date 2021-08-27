@@ -1,4 +1,4 @@
-enum ProductCategory {
+export enum ProductCategory {
   Snacks = "Lanches",
   Drinks = "Bebidas",
   Desserts = "Sobremesas",
@@ -8,7 +8,7 @@ export type Product = {
   id: number;
   title: string;
   price: string;
-  category: string ;
+  category: ProductCategory ;
   imgUrl: string;
 };
 

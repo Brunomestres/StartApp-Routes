@@ -1,13 +1,13 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState  } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Container, FormControl, FormLabel, Input, Select, Button} from '@chakra-ui/react';
-import { Product } from '../data/products';
+import { ProductCategory } from '../data/products';
 export function ProductCreate() {
   const [title, setTitle ] = useState("");
   const [price, setPrice ] = useState("");
-  const [category, setCategory ] = useState("");
+  const [category, setCategory ] = useState<ProductCategory>();
   const [imgUrl, setImgUrl ] = useState("");
-
-
+  const router = useHistory();
 
   function handleSubmit(e:React.FormEvent){
     e.preventDefault();
@@ -26,11 +26,12 @@ export function ProductCreate() {
       const localProduct = JSON.parse(save);
       products.push(...localProduct, product)
       localStorage.setItem('products', JSON.stringify(products))
-      return;
+      return router.push('/');
     }
 
     products.push(product);
-    localStorage.setItem('products', JSON.stringify(products))
+    localStorage.setItem('products', JSON.stringify(products));
+    return router.push('/');
   }
 
 
@@ -49,10 +50,10 @@ export function ProductCreate() {
 
         <FormControl id="category" mt="15px">
           <FormLabel>Categoria</FormLabel>
-          <Select placeholder="Selecione a categoria" isRequired value={category} onChange={(e)=> setCategory(e.target.value)}>
-            <option value="Lanches">Lanches</option>
-            <option value="Bebidas">Bebidas</option>
-            <option value="Sobremesas">Sobremesas</option>
+          <Select placeholder="Selecione a categoria" isRequired value={category} onChange={(e)=> setCategory(e.target.value as ProductCategory)}>
+            <option value={ProductCategory.Snacks}>Lanches</option>
+            <option value={ProductCategory.Drinks}>Bebidas</option>
+            <option value={ProductCategory.Desserts}>Sobremesas</option>
           </Select>
         </FormControl>
 

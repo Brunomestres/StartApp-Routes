@@ -1,15 +1,14 @@
 import  { useState , useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { Container, FormControl, FormLabel, Input, Select, Button} from '@chakra-ui/react';
-import { Product } from '../data/products';
+import { Product, ProductCategory } from '../data/products';
 export function ProductEdit() {
-  const [products, setProducts] = useState<Product[]>(() => getStorage())
   const [title, setTitle ] = useState("");
   const [price, setPrice ] = useState("");
-  const [category, setCategory ] = useState("");
+  const [category, setCategory ] = useState<ProductCategory>();
   const [imgUrl, setImgUrl ] = useState("");
   const { id } = useParams<{ id: string }>();
-
+  const route = useHistory();
   useEffect(() =>{
       const ProductFind = getProduct();
       if(ProductFind){
@@ -18,7 +17,6 @@ export function ProductEdit() {
         setCategory(ProductFind.category);
         setImgUrl(ProductFind.imgUrl);
       }
-      console.log(products);
   } ,[])
 
 
@@ -49,20 +47,12 @@ export function ProductEdit() {
 
   function handleSubmit(e:React.FormEvent){
     e.preventDefault();
-    const product = {
-      id,
-      title,
-      price,
-      category,
-      imgUrl
-    }
-
     const storage = getStorage();
 
     const updatedListProduct = storage.map((p:Product) => {
       if(p.id === parseInt(id)){
         p.title = title;
-        p.category = category;
+        p.category = category!;
         p.price = price;
         p.imgUrl = imgUrl
       }
@@ -70,14 +60,7 @@ export function ProductEdit() {
     })
 
     localStorage.setItem('products', JSON.stringify(updatedListProduct));
-
-    // setProducts((oldValue) =>  {
-    //   return {
-    //     ...oldValue,
-    //     product
-    //   }
-    // });
-
+    return route.push('/');
   }
 
 
@@ -96,10 +79,11 @@ export function ProductEdit() {
 
         <FormControl id="category" mt="15px">
           <FormLabel>Categoria</FormLabel>
-          <Select placeholder="Selecione a categoria" isRequired value={category} onChange={(e)=> setCategory(e.target.value)}>
-            <option value="Lanches">Lanches</option>
-            <option value="Bebidas">Bebidas</option>
-            <option value="Sobremesas">Sobremesas</option>
+          <Select placeholder="Selecione a categoria" isRequired value={category} onChange={(e)=>
+              setCategory(e.target.value as ProductCategory)}>
+            <option value={ProductCategory.Snacks}>Lanches</option>
+            <option value={ProductCategory.Drinks}>Bebidas</option>
+            <option value={ProductCategory.Desserts}>Sobremesas</option>
           </Select>
         </FormControl>
 
@@ -107,7 +91,17 @@ export function ProductEdit() {
           <FormLabel>Url da Imagem</FormLabel>
           <Input type="text" value={imgUrl} isRequired onChange={(e) => setImgUrl(e.target.value)} />
         </FormControl>
-        <Button colorScheme="blue" type="submit" mt="8">Salvar</Button>
+        <Button colorScheme="blue" color="black" type="submit" mt="8">Salvar</Button>
+        <Button
+          colorScheme="red"
+          color="black"
+          type="button"
+          mt="8"
+          ml="5px"
+          onClick={() => route.push('/')}
+          >
+            Cancelar
+        </Button>
       </form>
     </Container>
   )
