@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Container, Heading, HStack } from "@chakra-ui/react";
 import { ProductCard } from "../components/ProductCard";
 import { Product } from "../data/products";
-
+import { PaginationCustom } from '../components/PaginationCustom';
 export function ProductsPage() {
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -30,6 +30,8 @@ export function ProductsPage() {
             category={p.category}
           />
         ))}
+        <br/>
+        <PaginationCustom />
       </Container>
     </>
   );
